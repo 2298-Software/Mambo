@@ -11,6 +11,13 @@ class Distribute(spark: SparkSession, config: Config){
   val format = config.getString("format")
   val sql = config.getString("sql")
 
+  val saveMode = if(config.hasPath("saveMode")) {
+    config.getString("saveMode")
+  } else {
+    "error"
+  }
+
+
   def execute(): Unit = {
     println("executing distribute")
   }
@@ -18,11 +25,10 @@ class Distribute(spark: SparkSession, config: Config){
   def saveFile(): Unit = {
     logger.info("distribute dataset")
     val df: DataFrame = spark.sql(sql)
-    setDataFrame(df)
-    df.write.format(format).save(path)
+    setDataFrame(df).write.mode(saveMode).format(format).save(path)
   }
 
-  def setDataFrame(_df: DataFrame): Unit = {
+  def setDataFrame(_df: DataFrame): DataFrame = {
     if(config.hasPath("show")){
       _df.show(config.getBoolean("show"))
     }
@@ -37,5 +43,7 @@ class Distribute(spark: SparkSession, config: Config){
         logger.info("caching dataset")
       _df.cache()
     }
+
+    _df
   }
 }

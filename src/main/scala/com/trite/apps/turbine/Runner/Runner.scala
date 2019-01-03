@@ -65,7 +65,12 @@ class Runner {
         }
         case "process" => {
           val c = new Process(spark, stepConfig)
-          c.execute()
+          subType
+          match {
+            case "executeSql" => {
+              c.executeSql()
+            }
+          }
         }
         case "distribute" => {
           val c = new Distribute(spark,   stepConfig)
