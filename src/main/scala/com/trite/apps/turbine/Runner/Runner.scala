@@ -3,8 +3,6 @@ package main.scala.com.trite.apps.turbine.Runner
 import com.typesafe.config.Config
 import main.scala.com.trite.apps.turbine.Components._
 import org.slf4j.{Logger, LoggerFactory}
-import org.apache.spark
-import org.apache.spark.SparkContext
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -33,7 +31,6 @@ class Runner {
       .enableHiveSupport()
       .getOrCreate()
 
-
     val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
     logger.debug("Starting getting steps")
@@ -43,46 +40,43 @@ class Runner {
     val stepNames = config.getObject("steps").keySet().toSeq.sorted
 
     for (stepName: String <- stepNames) {
-      val stepConfig: Config = config.getConfig("steps").getConfig(stepName);
+      val stepConfig: Config = config.getConfig("steps").getConfig(stepName)
       val typ = stepConfig.getValue("type").unwrapped()
       val subType = stepConfig.getValue("subType").unwrapped()
 
       typ
       match {
-        case "generate" => {
-          val c = new Generate(spark, stepConfig)
+        case "generate" =>
+          val gen = new Generate(spark, stepConfig)
           subType
           match {
-            case "dataset" => {
-              c.dataset()
-            }
+            case "dataset" =>
+              gen.dataset()
           }
-
-        }
-        case "ingest" => {
-          val c = new Ingest(spark, stepConfig)
-          c.execute
-        }
-        case "process" => {
-          val c = new Process(spark, stepConfig)
+        case "ingest" =>
+          val ing = new Ingest(spark, stepConfig)
           subType
           match {
-            case "executeSql" => {
-              c.executeSql()
+            case "importFile" =>
+              ing.importFile()
+            case "importCsvFile" =>
+              ing.importCsvFile()
             }
-          }
-        }
-        case "distribute" => {
-          val c = new Distribute(spark,   stepConfig)
+        case "process" =>
+          val pro = new Process(spark, stepConfig)
           subType
           match {
-            case "saveFile" => {
-              c.saveFile()
+            case "executeSql" =>
+              pro.executeSql()
             }
+        case "distribute" =>
+          val dist = new Distribute(spark,   stepConfig)
+          subType
+          match {
+            case "saveFile" =>
+              dist.saveFile()
           }
-        }
       }
-
     }
   }
 }

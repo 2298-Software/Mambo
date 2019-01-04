@@ -2,4 +2,4 @@
 derby.log
 metastore_db
 spark-warehouse
-.idea
+Maven*xml
