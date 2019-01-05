@@ -58,6 +58,8 @@ class Runner {
               ing.importFile()
             case "importCsvFile" =>
               ing.importCsvFile()
+            case "importXlsFile" =>
+              ing.importXlsFile()
           }
         case "process" =>
           val pro = new Process(spark, stepConfig)

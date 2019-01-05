@@ -11,11 +11,6 @@ import com.trite.apps.turbine.Runner.Runner
 import org.apache.log4j
 import org.apache.spark.sql.SparkSession
 
-/**
-  * Created by joe on 1/1/2019.
-  */
-
-
 object TurbineMain {
       def main(args: Array[String]): Unit = {
             val tm = new TurbineMain(args)

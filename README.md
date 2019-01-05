@@ -11,6 +11,19 @@ Some examples of what you can easily do with Turbine:
 - Automatically merge into slowly changing dimensions (Type 1 and 2, and bi-temporal)
 - Insert custom DataFrame transformation logic for executing complex business rules
 
+## Available Components
+
+### Generate
+    - Dataset - generate a dataset that is useful testing
+### Ingest
+    - ImportFile - Import a text file into an in-memory dataset
+    - ImportCsvFile - Import a csv file into an in-memory dataset
+    - ImportXlsFile - Import a xls file into an in-memory dataset
+### Process
+    - ExecuteSql - Execute a sql command against an in-memory dataset
+### Distribute
+    - SaveFile - Save an in-memory dataset to file (csv, json, parquet, avro)
+  
 ## Get started
 
 ### Requirements
