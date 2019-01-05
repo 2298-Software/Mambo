@@ -1,4 +1,4 @@
-package main.scala.com.trite.apps.turbine.Components
+package com.trite.apps.turbine.Components
 import com.typesafe.config.Config
 import org.apache.spark.sql.{DataFrame, SparkSession}
 

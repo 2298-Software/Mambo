@@ -1,13 +1,10 @@
-package main.scala.com.trite.apps.turbine.Runner
+package com.trite.apps.turbine.Runner
 
 import com.typesafe.config.Config
-import main.scala.com.trite.apps.turbine.Components._
+import com.trite.apps.turbine.Components._
 import org.slf4j.{Logger, LoggerFactory}
 import org.apache.spark.sql.SparkSession
 
-/**
-  * Created by joe on 1/1/2019.
-  */
 class Runner {
   def run(config: Config) {
 

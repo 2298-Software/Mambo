@@ -1,12 +1,13 @@
-package main.scala.com.trite.apps.turbine
+package com.trite.apps.turbine
 
 
 import java.io.File
+import java.nio.file.{Files, Path, Paths}
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import com.typesafe.config.{Config, ConfigFactory, ConfigUtil}
-import main.scala.com.trite.apps.turbine.Runner.Runner
+import com.trite.apps.turbine.Runner.Runner
 import org.apache.log4j
 import org.apache.spark.sql.SparkSession
 
@@ -27,7 +28,16 @@ class TurbineMain(args: Array[String]) {
             println("Running Main")
             val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
-            logger.info("Envelope application started ")
+            if (args.length < 1) {
+                  throw new RuntimeException("Missing configuration file argument.")
+            } else {
+                  val p: Path = Paths.get(args(0))
+                  if (Files.notExists(p) || Files.isDirectory(p)) {
+                        throw new RuntimeException("Can't access pipeline configuration file '" + args(0) + "'.")
+                  }
+            }
+
+            logger.info("Turbine application started ")
 
             var config: Config = ConfigFactory.parseFile(new File(args(0)))
             if (args.length == 2) {
