@@ -29,9 +29,9 @@ class TurbineMain(args: Array[String]) {
 
             logger.info("Envelope application started ")
 
-            val config: Config = ConfigFactory.parseFile(new File(args(0))).resolve()
+            var config: Config = ConfigFactory.parseFile(new File(args(0)))
             if (args.length == 2) {
-                  //ConfigUtils.applySubstitutions(config, args(1));
+                 config = config.withFallback(ConfigFactory.parseFile(new File(args(1)))).resolve()
             } else if (args.length > 2) {
                   logger.error("Too many parameters to Turbine application")
             } else {

@@ -61,16 +61,16 @@ class Runner {
               ing.importFile()
             case "importCsvFile" =>
               ing.importCsvFile()
-            }
+          }
         case "process" =>
           val pro = new Process(spark, stepConfig)
           subType
           match {
             case "executeSql" =>
               pro.executeSql()
-            }
+          }
         case "distribute" =>
-          val dist = new Distribute(spark,   stepConfig)
+          val dist = new Distribute(spark, stepConfig)
           subType
           match {
             case "saveFile" =>

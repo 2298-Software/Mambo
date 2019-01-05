@@ -1,16 +1,15 @@
 package main.scala.com.trite.apps.turbine.Components
 import com.typesafe.config.Config
 import org.apache.spark.sql.{DataFrame, SparkSession}
-/**
-  * Created by joe on 1/1/2019.
-  */
+
 class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, config){
   val path: String = config.getString("path")
   val format: String = config.getString("format")
+  val outputName: String = config.getString("outputName")
 
   def importFile(): Unit = {
     logger.info("executing importFile")
-    setDataFrame(spark.read.format(format).load(path))
+    setDataFrameWithOutput(spark.read.format(format).load(path), outputName)
   }
 
   def importCsvFile(): Unit = {
@@ -25,11 +24,11 @@ class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, c
     } else
       "false"
 
-    setDataFrame(spark
+    setDataFrameWithOutput(spark
       .read
       .option("header", header)
       .option("inferSchema", inferSchema)
       .format(format)
-      .load(path))
+      .load(path), outputName)
   }
 }
