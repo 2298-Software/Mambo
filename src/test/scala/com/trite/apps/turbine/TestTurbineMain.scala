@@ -3,9 +3,6 @@ package com.trite.apps.turbine
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
 import java.nio.file.{Files, Path}
 
-import com.trite.apps.turbine
-import com.trite.apps.turbine.TurbineMain
-
 class TestTurbineMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
   test("testGoodConfig"){
     val p: Path = Files.createTempFile("TestEnvelopeMain", null ) ;
@@ -18,13 +15,20 @@ class TestTurbineMain extends FunSuite with BeforeAndAfterEach with BeforeAndAft
 
   test("testGoodExample"){
     val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/file-ingest.conf"
+    conf(0) = "examples/file-ingest-local-csv.conf"
+    conf(1) = "examples/environment.conf"
+    TurbineMain.main(conf)
+  }
+
+  test("testRemoteHttpCsv"){
+    val conf: Array[String] = new Array[String](2)
+    conf(0) = "examples/file-ingest-remote-csv.conf"
     conf(1) = "examples/environment.conf"
     TurbineMain.main(conf)
   }
 
   test("testRdbmsExample"){
-    import java.sql.{DriverManager, Connection}
+    import java.sql.DriverManager
     val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
 
     Class.forName("org.h2.Driver")

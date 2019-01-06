@@ -42,7 +42,8 @@ This will create `turbine-0.4.0.jar` in the target directory.
 
 Turbine provides three example pipelines that you can run for yourself:
 
-- [Excel Ingest](examples/file-ingest-xls.conf): Example that reads an XLS file, adds a timestamp column and saves as a json file.
+- [Ingest Local Excel File](examples/file-ingest-local-xls.conf): Example that reads a local XLS file, adds a timestamp column and saves as a json file.
+- [Ingest Remote CSV File](examples/file-ingest-remote-csv.conf): Example that reads remote (HTTP) csv file, aggregates the data and then saves as a json file.
 - [Generate Data](examples/generate-data.conf): Example that generates test data, adds a column and saves as a json file.
 - [RDBMS Ingest](examples/rdbms-ingest.conf): Example that reads an rdbms table, adds a timestamp column and saves as a json file.
 

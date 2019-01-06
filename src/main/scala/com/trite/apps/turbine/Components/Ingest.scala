@@ -1,10 +1,10 @@
 package com.trite.apps.turbine.Components
 import com.typesafe.config.Config
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, config){
   val outputName: String = config.getString("outputName")
-  val path: String = if(config.hasPath("path")) {
+  var path: String = if(config.hasPath("path")) {
     config.getString("path")
   } else "none"
 
@@ -12,13 +12,38 @@ class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, c
     config.getString("format")
   } else "none"
 
+  if(path.startsWith("http")){
+    fileDownloader(path, "/tmp/" + path.split("/").last)
+    path = "/tmp/" + path.split("/").last
+  }
 
   def importFile(): Unit = {
     logger.info("executing importFile")
-    setDataFrameWithOutput(spark.read.format(format).load(path), outputName)
+    val header = if(config.hasPath("header")) {
+      config.getString("header")
+    } else
+      "false"
+
+    val inferSchema = if(config.hasPath("inferSchema")) {
+      config.getString("inferSchema")
+    } else
+      "false"
+
+    val delimiter = if(config.hasPath("delimiter")) {
+      config.getString("delimiter")
+    } else
+      ","
+
+    setDataFrameWithOutput(spark
+      .read
+      .option("header", header)
+      .option("inferSchema", inferSchema)
+      .option("delimiter", delimiter)
+      .format(format)
+      .load(path), outputName)
   }
 
-  def importCsvFile(): Unit = {
+   def importCsvFile(): Unit = {
     logger.info("executing importCsvFile")
     val header = if(config.hasPath("header")) {
       config.getString("header")
@@ -44,7 +69,7 @@ class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, c
       .load(path), outputName)
   }
 
-  def importXlsFile(): Unit = {
+   def importXlsFile(): Unit = {
     logger.info("executing importXlsFile")
 
     val sheetName = config.getString("sheetName")
@@ -129,4 +154,12 @@ class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, c
       , outputName)
   }
 
+
+  import sys.process._
+  import java.net.URL
+  import java.io.File
+
+  def fileDownloader(url: String, filename: String): Unit = {
+    new URL(url) #> new File(filename) !!
+  }
 }
