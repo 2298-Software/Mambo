@@ -3,12 +3,15 @@ import com.typesafe.config.Config
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, config){
-  val path: String = config.getString("path")
+  val outputName: String = config.getString("outputName")
+  val path: String = if(config.hasPath("path")) {
+    config.getString("path")
+  } else "none"
+
   val format: String = if(config.hasPath("format")) {
     config.getString("format")
   } else "none"
 
-  val outputName: String = config.getString("outputName")
 
   def importFile(): Unit = {
     logger.info("executing importFile")
@@ -99,4 +102,31 @@ class Ingest(spark: SparkSession, config: Config) extends BaseComponent(spark, c
       .option("excerptSize", excerptSize)
       .load(path), outputName)
   }
+
+  def importRdbmsTable(): Unit = {
+    logger.info("executing importRdbmsTable")
+    val jdbcUrl = config.getString("jdbcUrl")
+    val partitionColumn = if(jdbcUrl.toLowerCase.contains("sqlserver")){
+      "%s %% %s".format(config.getString("splitColumn"), config.getString("splitCount"))
+    } else {
+      "mod(%s,%s)".format(config.getString("splitColumn"), config.getString("splitCount"))
+    }
+    val splitCount: Int = config.getInt("splitCount")
+
+
+    setDataFrameWithOutput(spark.read
+      .format("jdbc")
+      .option("url", jdbcUrl )
+      .option("dbtable", "(%s) as t".format(config.getString("query")))
+      .option("user", config.getString("user"))
+      .option("password", config.getString("pass"))
+      .option("driver", config.getString("driver"))
+      .option("numPartitions", config.getString("splitCount"))
+      .option("partitionColumn", partitionColumn)
+      .option("lowerBound", "0")
+      .option("upperBound", (splitCount + 1).toString)
+      .load(path)
+      , outputName)
+  }
+
 }

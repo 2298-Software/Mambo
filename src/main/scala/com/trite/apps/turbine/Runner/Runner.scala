@@ -49,6 +49,8 @@ class Runner {
           match {
             case "dataset" =>
               gen.dataset()
+            case _ =>
+              throw new Exception("SubType %s not yet implemented".format(subType))
           }
         case "ingest" =>
           val ing = new Ingest(spark, stepConfig)
@@ -60,6 +62,10 @@ class Runner {
               ing.importCsvFile()
             case "importXlsFile" =>
               ing.importXlsFile()
+            case "importRdbmsTable" =>
+              ing.importRdbmsTable()
+            case _ =>
+              throw new Exception("SubType %s not yet implemented".format(subType))
           }
         case "process" =>
           val pro = new Process(spark, stepConfig)
@@ -67,6 +73,8 @@ class Runner {
           match {
             case "executeSql" =>
               pro.executeSql()
+            case _ =>
+              throw new Exception("SubType %s not yet implemented".format(subType))
           }
         case "distribute" =>
           val dist = new Distribute(spark, stepConfig)
@@ -74,6 +82,8 @@ class Runner {
           match {
             case "saveFile" =>
               dist.saveFile()
+            case _ =>
+              throw new Exception("SubType %s not yet implemented".format(subType))
           }
       }
     }
