@@ -28,10 +28,6 @@ Supports local and remote files based on the specified fs (http://, file://, hdf
   
 ## Get started
 
-### Requirements
-
-Turbine can execute on any Spark cluster with:
-
 ### Compiling Turbine
 
 You can build the Turbine application from the top-level directory of the source code by running the Maven command:
