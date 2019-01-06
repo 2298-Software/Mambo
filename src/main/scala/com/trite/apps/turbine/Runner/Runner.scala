@@ -77,5 +77,7 @@ class Runner {
           }
       }
     }
+
+    spark.stop()
   }
 }

@@ -42,7 +42,8 @@ This will create `turbine-0.4.0.jar` in the target directory.
 
 Turbine provides three example pipelines that you can run for yourself:
 
-TODO
+- [Excel Ingest](examples/file-ingest-xls.conf): Simulates reading an XLS file, adding a timestamp and saving as a json file.
+- [Generate DAta](examples/generate-data.conf): Generate test data, add a column and save as a json file.
 
 ### Running Turbine
 
