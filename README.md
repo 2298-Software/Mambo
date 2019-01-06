@@ -16,6 +16,8 @@ Some examples of what you can easily do with Turbine:
 ### Generate
     - Dataset - generate a dataset that is useful testing
 ### Ingest
+Supports local and remote files based on the specified fs (http://, file://, hdfs://)
+
     - ImportFile - Import a text file into an in-memory dataset
     - ImportCsvFile - Import a csv file into an in-memory dataset
     - ImportXlsFile - Import a xls file into an in-memory dataset
@@ -40,7 +42,7 @@ This will create `turbine-0.4.0.jar` in the target directory.
 
 ### Finding examples
 
-Turbine provides three example pipelines that you can run for yourself:
+Turbine provides example pipelines that you can run for yourself:
 
 - [Ingest Local Excel File](examples/file-ingest-local-xls.conf): Example that reads a local XLS file, adds a timestamp column and saves as a json file.
 - [Ingest Remote CSV File](examples/file-ingest-remote-csv.conf): Example that reads remote (HTTP) csv file, aggregates the data and then saves as a json file.
