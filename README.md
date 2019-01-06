@@ -34,7 +34,7 @@ You can build the Turbine application from the top-level directory of the source
 
     mvn clean package
 
-This will create `turbine-0.4.0.jar` in the target directory.
+This will create `turbine-0.1.0.jar` in the target directory.
 
 ### Finding examples
 
@@ -49,5 +49,5 @@ Turbine provides example pipelines that you can run for yourself:
 
 You can run Turbine by submitting it to Spark with the configuration file for your pipeline:
 
-    spark-submit turbine-0.4.0.jar yourpipeline.conf
+    spark-submit turbine-0.1.0.jar yourpipeline.conf
 
