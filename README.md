@@ -49,5 +49,5 @@ Turbine provides three example pipelines that you can run for yourself:
 
 You can run Turbine by submitting it to Spark with the configuration file for your pipeline:
 
-    spark2-submit turbine-0.4.0.jar yourpipeline.conf
+    spark-submit turbine-0.4.0.jar yourpipeline.conf
 
