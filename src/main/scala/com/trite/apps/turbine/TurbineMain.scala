@@ -6,21 +6,18 @@ import java.nio.file.{Files, Path, Paths}
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import com.typesafe.config.{Config, ConfigFactory, ConfigUtil}
+import com.typesafe.config.{Config, ConfigFactory}
 import com.trite.apps.turbine.Runner.Runner
-import org.apache.log4j
-import org.apache.spark.sql.SparkSession
 
 object TurbineMain {
       def main(args: Array[String]): Unit = {
             val tm = new TurbineMain(args)
-            tm.run
+            tm.run()
       }
 }
 
 class TurbineMain(args: Array[String]) {
-      def run {
-            println("Running Main")
+      def run() {
             val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
             if (args.length < 1) {

@@ -1,6 +1,6 @@
 package com.trite.apps.turbine.Runner
 
-import com.typesafe.config.Config
+import com.typesafe.config.{Config, ConfigRenderOptions, ConfigValue}
 import com.trite.apps.turbine.Components._
 import org.slf4j.{Logger, LoggerFactory}
 import org.apache.spark.sql.SparkSession
@@ -29,8 +29,12 @@ class Runner {
       .getOrCreate()
 
     val logger: Logger = LoggerFactory.getLogger(this.getClass)
+    logger.info("\n___________          ___.   .__               \n\\__    ___/_ ________\\_ |__ |__| ____   ____  \n  |    | |  |  \\_  __ \\ __ \\|  |/    \\_/ __ \\ \n  |    | |  |  /|  | \\/ \\_\\ \\  |   |  \\  ___/ \n  |____| |____/ |__|  |___  /__|___|  /\\___  >\n                          \\/        \\/     \\/ ")
 
-    logger.debug("Starting getting steps")
+    val renderOpts = ConfigRenderOptions.defaults().setOriginComments(false).setComments(false).setJson(false)
+    logger.info("\nYour config is:\n" + config.root().render(renderOpts))
+
+    logger.info("Getting steps")
 
     import collection.JavaConversions._
 
