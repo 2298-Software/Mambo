@@ -2,7 +2,7 @@
 
 MamboFlow is a configuration-driven framework for Apache Spark that makes it easy to develop Spark-based data processing pipelines.
 
-MamboFlow is simply a pre-made Spark application that implements many of the tasks commonly found in ETL pipelines. In many cases, MamboFlow allows large pipelines to be developed on Spark with no coding required. When custom code is needed, there are pluggable points in MamboFlow for core functionality to be extended. Turbine works in batch and streaming modes.
+MamboFlow is simply a pre-made Spark application that implements many of the tasks commonly found in ETL pipelines. In many cases, MamboFlow allows large pipelines to be developed on Spark with no coding required. When custom code is needed, there are pluggable points in MamboFlow for core functionality to be extended. MamboFlow works in batch and streaming modes.
 
 Some examples of what you can easily do with MamboFlow:
 - Run a graph of Spark SQL queries, all in the memory of a single Spark job
