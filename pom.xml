@@ -6,10 +6,10 @@
     <name>${project.artifactId}</name>
     <description>Mambo is an Apache Spark application framework for implementing streaming and batch data pipelines.</description>
     <inceptionYear>2019</inceptionYear>
-    <url>https://github.com/joetrite/turbine</url>
+    <url>https://github.com/2298-Software/MamboFlow</url>
     <organization>
-        <name>Trite, Inc.</name>
-        <url>turbine</url>
+        <name>2298 Software</name>
+        <url>https://github.com/2298-Software</url>
     </organization>
     <licenses>
         <license>
