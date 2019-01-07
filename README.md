@@ -21,6 +21,7 @@ Supports local and remote files based on the specified fs (http://, file://, hdf
     - ImportFile - Import a text file into an in-memory dataset
     - ImportCsvFile - Import a csv file into an in-memory dataset
     - ImportXlsFile - Import a xls file into an in-memory dataset
+    - ImportRdbmsTable - Import a table/query from RDBMS into an in-memory dataset
 ### Process
     - ExecuteSql - Execute a sql command against an in-memory dataset
 ### Distribute
