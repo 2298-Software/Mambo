@@ -3,3 +3,5 @@ derby.log
 metastore_db
 spark-warehouse
 Maven*xml
+.idea
+dependency-reduced-pom*
