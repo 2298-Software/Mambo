@@ -1,7 +1,8 @@
-package com.trite.apps.turbine.Runner
+package com.twentytwoninteyeightsoftware.apps.mambo.Runner
 
 import com.typesafe.config.{Config, ConfigRenderOptions, ConfigValue}
 import com.trite.apps.turbine.Components._
+import com.twentytwoninteyeightsoftware.apps.mambo.Components._
 import org.slf4j.{Logger, LoggerFactory}
 import org.apache.spark.sql.SparkSession
 
@@ -43,52 +44,19 @@ class Runner {
     for (stepName: String <- stepNames) {
       val stepConfig: Config = config.getConfig("steps").getConfig(stepName)
       val typ = stepConfig.getValue("type").unwrapped()
-      val subType = stepConfig.getValue("subType").unwrapped()
 
       typ
       match {
-        case "generate" =>
-          val gen = new Generate(spark, stepConfig)
-          subType
-          match {
-            case "dataset" =>
-              gen.dataset()
-            case _ =>
-              throw new Exception("SubType %s not yet implemented".format(subType))
-          }
-        case "ingest" =>
-          val ing = new Ingest(spark, stepConfig)
-          subType
-          match {
-            case "importFile" =>
-              ing.importFile()
-            case "importCsvFile" =>
-              ing.importCsvFile()
-            case "importXlsFile" =>
-              ing.importXlsFile()
-            case "importRdbmsTable" =>
-              ing.importRdbmsTable()
-            case _ =>
-              throw new Exception("SubType %s not yet implemented".format(subType))
-          }
-        case "process" =>
-          val pro = new Process(spark, stepConfig)
-          subType
-          match {
-            case "executeSql" =>
-              pro.executeSql()
-            case _ =>
-              throw new Exception("SubType %s not yet implemented".format(subType))
-          }
-        case "distribute" =>
-          val dist = new Distribute(spark, stepConfig)
-          subType
-          match {
-            case "saveFile" =>
-              dist.saveFile()
-            case _ =>
-              throw new Exception("SubType %s not yet implemented".format(subType))
-          }
+        case "GenerateDataset" =>
+          new GenerateDataset(spark, stepConfig).run()
+        case "GetFile" =>
+          new GetFile(spark, stepConfig).run()
+        case "ExecuteSql" =>
+          new ExecuteSql(spark, stepConfig).run()
+        case "GetRdbms" =>
+          new GetRdbms(spark, stepConfig).run()
+        case "PutFile" =>
+          new PutFile(spark, stepConfig).run()
       }
     }
 

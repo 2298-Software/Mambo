@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.trite.apps</groupId>
-    <artifactId>turbine</artifactId>
+    <groupId>com.twentytwoninteyeightsoftware.apps</groupId>
+    <artifactId>mambo</artifactId>
     <version>0.1.0</version>
     <name>${project.artifactId}</name>
-    <description>Turbine is an Apache Spark application framework for implementing streaming and batch data pipelines.</description>
+    <description>Mambo is an Apache Spark application framework for implementing streaming and batch data pipelines.</description>
     <inceptionYear>2019</inceptionYear>
     <url>https://github.com/joetrite/turbine</url>
     <organization>
@@ -169,7 +169,7 @@
                         <transformers>
                             <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                <mainClass>com.trite.apps.turbine.TurbineMain</mainClass>
+                                <mainClass>com.twentytwoninteyeightsoftware.apps.mambo.MamboMain</mainClass>
                             </transformer>
                         </transformers>
                         <artifactSet>

@@ -2,9 +2,9 @@
 
 MamboFlow is a configuration-driven framework for Apache Spark that makes it easy to develop Spark-based data processing pipelines.
 
-MamboFlow is simply a pre-made Spark application that implements many of the tasks commonly found in ETL pipelines. In many cases, MamboFlow allows large pipelines to be developed on Spark with no coding required. When custom code is needed, there are pluggable points in MamboFlow for core functionality to be extended. MamboFlow works in batch and streaming modes.
+Mambo is simply a pre-made Spark application that implements many of the tasks commonly found in ETL pipelines. In many cases, Mambo allows large pipelines to be developed on Spark with no coding required. When custom code is needed, there are pluggable points in Mambo for core functionality to be extended. Mambo works in batch and streaming modes.
 
-Some examples of what you can easily do with MamboFlow:
+Some examples of what you can easily do with Mambo:
 - Run a graph of Spark SQL queries, all in the memory of a single Spark job
 - Stream in event data from Apache Kafka, join to reference data, and write to Apache Kudu
 - Read in from an RDBMS table and write to Apache Parquet files on HDFS
@@ -29,26 +29,26 @@ Supports local and remote files based on the specified fs (http://, file://, hdf
   
 ## Get started
 
-### Compiling MamboFlow
+### Compiling Mambo
 
-You can build the MamboFlow application from the top-level directory of the source code by running the Maven command:
+You can build the Mambo application from the top-level directory of the source code by running the Maven command:
 
     mvn clean package
 
-This will create `mamboflow-0.1.0.jar` in the target directory.
+This will create `mambo-0.1.0.jar` in the target directory.
 
 ### Finding examples
 
-TlMamboFlow provides example pipelines that you can run for yourself:
+TlMambo provides example pipelines that you can run for yourself:
 
 - [Ingest Local Excel File](examples/file-ingest-local-xls.conf): Example that reads a local XLS file, adds a timestamp column and saves as a json file.
 - [Ingest Remote CSV File](examples/file-ingest-remote-csv.conf): Example that reads remote (HTTP) csv file, aggregates the data and then saves as a json file.
 - [Generate Data](examples/generate-data.conf): Example that generates test data, adds a column and saves as a json file.
 - [RDBMS Ingest](examples/rdbms-ingest.conf): Example that reads an rdbms table, adds a timestamp column and saves as a json file.
 
-### Running MamboFlow
+### Running Mambo
 
-You can run MamboFlow by submitting it to Spark with the configuration file for your pipeline:
+You can run Mambo by submitting it to Spark with the configuration file for your pipeline:
 
-    spark-submit mamboflow-0.1.0.jar yourpipeline.conf
+    spark-submit mambo-0.1.0.jar yourpipeline.conf
 

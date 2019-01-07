@@ -1,12 +1,9 @@
-package com.trite.apps.turbine.Components
+package com.twentytwoninteyeightsoftware.apps.mambo.Components
 
 import com.typesafe.config.Config
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.slf4j.{Logger, LoggerFactory}
 
-/**
-  * Created by joe on 1/1/2019.
-  */
 class BaseComponent(spark: SparkSession, config: Config){
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 

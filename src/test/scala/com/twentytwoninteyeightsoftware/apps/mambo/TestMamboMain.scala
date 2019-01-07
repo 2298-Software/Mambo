@@ -1,30 +1,30 @@
-package com.trite.apps.turbine
+package com.twentytwoninteyeightsoftware.apps.mambo
 
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
 import java.nio.file.{Files, Path}
 
-class TestTurbineMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
+class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
   test("testGoodConfig"){
-    val p: Path = Files.createTempFile("TestEnvelopeMain", null ) ;
+    val p: Path = Files.createTempFile("TestMamboMain", null ) ;
     Files.write(p,"application {name=test\nmaster=local\n}\nsteps{}".getBytes()) ;
     p.toFile.deleteOnExit()
     val conf: Array[String] = new Array[String](1)
     conf(0) = p.toString
-    TurbineMain.main(conf)
+    MamboMain.main(conf)
   }
 
   test("testGoodExample"){
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/file-ingest-local-csv.conf"
     conf(1) = "examples/environment.conf"
-    TurbineMain.main(conf)
+    MamboMain.main(conf)
   }
 
   test("testRemoteHttpCsv"){
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/file-ingest-remote-csv.conf"
     conf(1) = "examples/environment.conf"
-    TurbineMain.main(conf)
+    MamboMain.main(conf)
   }
 
   test("testRdbmsExample"){
@@ -40,6 +40,6 @@ class TestTurbineMain extends FunSuite with BeforeAndAfterEach with BeforeAndAft
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/rdbms-ingest.conf"
     conf(1) = "examples/environment.conf"
-    TurbineMain.main(conf)
+    MamboMain.main(conf)
   }
 }

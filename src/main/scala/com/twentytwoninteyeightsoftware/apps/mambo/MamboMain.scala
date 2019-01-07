@@ -1,22 +1,21 @@
-package com.trite.apps.turbine
-
+package com.twentytwoninteyeightsoftware.apps.mambo
 
 import java.io.File
 import java.nio.file.{Files, Path, Paths}
 
+import com.twentytwoninteyeightsoftware.apps.mambo.Runner.Runner
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import com.typesafe.config.{Config, ConfigFactory}
-import com.trite.apps.turbine.Runner.Runner
 
-object TurbineMain {
+object MamboMain {
       def main(args: Array[String]): Unit = {
-            val tm = new TurbineMain(args)
+            val tm = new MamboMain(args)
             tm.run()
       }
 }
 
-class TurbineMain(args: Array[String]) {
+class MamboMain(args: Array[String]) {
       def run() {
             val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
