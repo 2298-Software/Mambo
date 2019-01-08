@@ -42,4 +42,21 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     conf(1) = "examples/environment.conf"
     MamboMain.main(conf)
   }
+
+
+  test("testRdbmsIngestAndDistribute"){
+    import java.sql.DriverManager
+    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
+
+    Class.forName("org.h2.Driver")
+    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
+    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
+    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
+    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+
+    val conf: Array[String] = new Array[String](2)
+    conf(0) = "examples/rdbms-ingest-and-distribute.conf"
+    conf(1) = "examples/environment.conf"
+    MamboMain.main(conf)
+  }
 }
