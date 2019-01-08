@@ -1,4 +1,4 @@
-# MamboFlow
+# Mambo
 
 MamboFlow is a configuration-driven framework for Apache Spark that makes it easy to develop Spark-based data processing pipelines.
 
