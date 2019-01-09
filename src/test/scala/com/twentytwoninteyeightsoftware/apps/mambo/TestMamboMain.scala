@@ -2,6 +2,8 @@ package com.twentytwoninteyeightsoftware.apps.mambo
 
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
 import java.nio.file.{Files, Path}
+import org.scalatest.Assertions.assert
+
 
 class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
   test("testGoodConfig"){
@@ -58,5 +60,47 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     conf(0) = "examples/rdbms-ingest-and-distribute.conf"
     conf(1) = "examples/environment.conf"
     MamboMain.main(conf)
+
+  }
+
+
+  test("testExecuteSqlEvaluationExample"){
+    import java.sql.DriverManager
+    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
+
+    Class.forName("org.h2.Driver")
+    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
+    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
+    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
+    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+
+    val conf: Array[String] = new Array[String](2)
+    conf(0) = "examples/execute-sql-evaluation-example.conf"
+    conf(1) = "examples/environment.conf"
+    MamboMain.main(conf)
+  }
+
+  test("testExecuteSqlEvaluationFailExample"){
+    import java.sql.DriverManager
+    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
+
+    Class.forName("org.h2.Driver")
+    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
+    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
+    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
+    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+
+    val conf: Array[String] = new Array[String](2)
+    conf(0) = "examples/execute-sql-evaluation-example.conf"
+    conf(1) = "examples/environment.conf"
+
+    try{
+      MamboMain.main(conf)
+    } catch {
+      case e: Exception => {
+        assert(e.getMessage == "ExecuteSqlEvaluation query (select if(count(*) " +
+          "!= 2, 'pass', 'fail') as result from vehicles) failed the evaluation by returning fail")
+      }
+    }
   }
 }

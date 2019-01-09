@@ -6,7 +6,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 class PutFile(spark: SparkSession, config: Config) extends BaseComponent(spark, config){
   val path: String = config.getString("path")
   val format: String = config.getString("format")
-  val sql: String = config.getString("sql")
+  val query: String = config.getString("query")
 
   val saveMode: String = if(config.hasPath("saveMode")) {
     config.getString("saveMode")
@@ -16,7 +16,7 @@ class PutFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
 
   def run(): Unit = {
     logger.info("executing saveFile")
-    val df: DataFrame = spark.sql(sql)
+    val df: DataFrame = spark.sql(query)
     setDataFrame(df).write.mode(saveMode).format(format).save(path)
   }
 }

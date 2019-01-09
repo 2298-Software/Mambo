@@ -56,6 +56,8 @@ class Runner {
           new GetRdbms(spark, stepConfig).run()
         case "PutFile" =>
           new PutFile(spark, stepConfig).run()
+        case "ExecuteSqlEvaluation" =>
+          new ExecuteSqlEvaluation(spark, stepConfig).run()
         case "PutRdbms" =>
           new PutRdbms(spark, stepConfig).run()
         case _ =>
