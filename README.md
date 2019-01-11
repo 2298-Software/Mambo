@@ -17,14 +17,15 @@ Some examples of what you can easily do with Mambo:
 **GenerateDataset** - generate a dataset that is useful for testing
 
 ### Process
-**ExecuteSql** - Execute a sql command against an in-memory dataset
+**ExecuteSql** - Execute a sql command against an in-memory dataset.  
+**ExecuteSqlEvaluation** - Execute a sql evaluation command (if > then > else) against one or more in-memory datasets in order to fail the execution of the job.
 
 ### Ingest
 **GetFile** - Import files (json, avro, parquet, csv, xls) into an in-memory dataset*  
 **GetRdbms** - Import date (table/query) from RDBMS into an in-memory dataset
 
 ### Distribute
-**PutFile** - Save an in-memory dataset to file (csv, json, parquet, avro)
+**PutFile** - Save an in-memory dataset to file (csv, json, parquet, avro)  
 **PutRdbms** - Save an in-memory dataset to RDBMS
 
 *Supports local and remote files based on the specified fs (http://, file://, hdfs://)
