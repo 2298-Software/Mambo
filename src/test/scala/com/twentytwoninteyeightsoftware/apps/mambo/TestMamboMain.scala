@@ -6,6 +6,19 @@ import org.scalatest.Assertions.assert
 
 
 class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
+  private def setupDb = {
+    import java.sql.DriverManager
+    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
+
+    Class.forName("org.h2.Driver")
+    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
+    conn.createStatement().execute("drop table if exists auto.vehicles")
+    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
+    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
+    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+  }
+
+
   test("testGoodConfig"){
     val p: Path = Files.createTempFile("TestMamboMain", null ) ;
     Files.write(p,"application {name=test\nmaster=local\n}\nsteps{}".getBytes()) ;
@@ -30,15 +43,7 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
   }
 
   test("testRdbmsExample"){
-    import java.sql.DriverManager
-    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
-
-    Class.forName("org.h2.Driver")
-    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
-    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
-    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
-    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
-
+    setupDb
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/rdbms-ingest.conf"
     conf(1) = "examples/environment.conf"
@@ -47,14 +52,7 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
 
 
   test("testRdbmsIngestAndDistribute"){
-    import java.sql.DriverManager
-    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
-
-    Class.forName("org.h2.Driver")
-    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
-    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
-    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
-    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+    setupDb
 
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/rdbms-ingest-and-distribute.conf"
@@ -65,14 +63,7 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
 
 
   test("testExecuteSqlEvaluationExample"){
-    import java.sql.DriverManager
-    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
-
-    Class.forName("org.h2.Driver")
-    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
-    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
-    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
-    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+    setupDb
 
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/execute-sql-evaluation-example.conf"
@@ -81,17 +72,10 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
   }
 
   test("testExecuteSqlEvaluationFailExample"){
-    import java.sql.DriverManager
-    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
-
-    Class.forName("org.h2.Driver")
-    val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
-    conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
-    conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
-    conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+    setupDb
 
     val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/execute-sql-evaluation-example.conf"
+    conf(0) = "examples/execute-sql-evaluation-fail-example.conf"
     conf(1) = "examples/environment.conf"
 
     try{

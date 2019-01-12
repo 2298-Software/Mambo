@@ -6,8 +6,8 @@ import org.apache.spark.sql.SparkSession
 class GetRdbms(spark: SparkSession, config: Config) extends BaseComponent(spark, config){
   val outputName: String = config.getString("outputName")
 
-  def run(): Boolean = {
-    logger.info("executing GetRdbmsData")
+  override def run(): Boolean = {
+    logger.info("executing GetRdbms")
     val jdbcUrl = config.getString("jdbcUrl")
     val partitionColumn = if(jdbcUrl.toLowerCase.contains("sqlserver")){
       "%s %% %s".format(config.getString("splitColumn"), config.getString("splitCount"))

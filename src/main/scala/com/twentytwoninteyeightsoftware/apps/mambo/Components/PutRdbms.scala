@@ -5,7 +5,7 @@ import org.apache.spark.sql.SparkSession
 
 class PutRdbms(spark: SparkSession, config: Config) extends BaseComponent(spark, config){
 
-  def run(): Boolean = {
+  override def run(): Boolean = {
     logger.info("executing PutRdbms")
     val jdbcUrl = config.getString("jdbcUrl")
     val partitionColumn = if(jdbcUrl.toLowerCase.contains("sqlserver")){

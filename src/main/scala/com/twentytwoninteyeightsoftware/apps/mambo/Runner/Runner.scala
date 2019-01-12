@@ -40,31 +40,40 @@ class Runner {
 
     val stepNames = config.getObject("steps").keySet().toSeq.sorted
 
-    for (stepName: String <- stepNames) {
-      val stepConfig: Config = config.getConfig("steps").getConfig(stepName)
-      val typ = stepConfig.getValue("type").unwrapped()
 
-      typ
-      match {
-        case "GenerateDataset" =>
-          new GenerateDataset(spark, stepConfig).run()
-        case "GetFile" =>
-          new GetFile(spark, stepConfig).run()
-        case "ExecuteSql" =>
-          new ExecuteSql(spark, stepConfig).run()
-        case "GetRdbms" =>
-          new GetRdbms(spark, stepConfig).run()
-        case "PutFile" =>
-          new PutFile(spark, stepConfig).run()
-        case "ExecuteSqlEvaluation" =>
-          new ExecuteSqlEvaluation(spark, stepConfig).run()
-        case "PutRdbms" =>
-          new PutRdbms(spark, stepConfig).run()
-        case _ =>
-          throw new Exception("step type %s not implemented!".format(typ))
+    for (stepName: String <- stepNames) {
+      logger.info("Found step: %s".format(stepName))
+      val stepConfig: Config = config.getConfig("steps").getConfig(stepName)
+      val typ = stepConfig.getString("type")
+      val enabled = stepConfig.getBoolean("enabled")
+
+      if (enabled) {
+        logger.info("Step: %s is enabled, executing..".format(stepName))
+        typ
+        match {
+          case "GenerateDataset" =>
+            new GenerateDataset(spark, stepConfig)
+          case "GetFile" =>
+            new GetFile(spark, stepConfig)
+          case "ExecuteSql" =>
+            new ExecuteSql(spark, stepConfig)
+          case "GetRdbms" =>
+            new GetRdbms(spark, stepConfig)
+          case "PutFile" =>
+            new PutFile(spark, stepConfig)
+          case "ExecuteSqlEvaluation" =>
+            new ExecuteSqlEvaluation(spark, stepConfig)
+          case "PutRdbms" =>
+            new PutRdbms(spark, stepConfig)
+          case _ =>
+            throw new Exception("step type %s not implemented!".format(stepConfig.getString("type")))
+        }
+        logger.info("Step: %s is complete.".format(stepName))
+
+      } else {
+        logger.info("skipping disabled step: %s".format(stepConfig.getString("name")))
       }
     }
-
     spark.stop()
   }
 }

@@ -4,15 +4,23 @@ import com.typesafe.config.Config
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.slf4j.{Logger, LoggerFactory}
 
+
 class BaseComponent(spark: SparkSession, config: Config) {
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
+  val name: String = config.getString("enabled")
+  val description: String = config.getString("description")
+  val enabled: Boolean = config.getBoolean("enabled")
+  val typ: String = config.getString("type")
+
+  def run(): Boolean = {
+      true
+  }
 
   def setDataFrame(_df: DataFrame): DataFrame = {
     val df: DataFrame = beforeSet(_df)
     afterSet(df)
     df
   }
-
 
   def setDataFrameWithOutput(_df: DataFrame, _outputName: String): DataFrame = {
     val df: DataFrame = beforeSet(_df)

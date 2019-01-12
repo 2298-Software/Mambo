@@ -33,7 +33,7 @@ class GetFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
   } else
     ","
 
-  def run(): Boolean = {
+  override def run(): Boolean = {
     logger.info("executing GetFile")
 
     format match {
