@@ -33,22 +33,21 @@ class GetFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
   } else
     ","
 
-  override def run(): Boolean = {
+  def run(): Boolean = {
     logger.info("executing GetFile")
 
     format match {
-      case "csv" => {
+      case "csv" =>
         logger.info("Executing GetFile - CSV")
 
-        setDataFrameWithOutput(spark
+        setDataFrame(spark
           .read
           .option("header", header)
           .option("inferSchema", inferSchema)
           .option("delimiter", delimiter)
           .format("csv")
           .load(path), outputName)
-      }
-    case "xls" => {
+    case "xls" =>
       logger.info("Executing GetFile - XLS")
 
       val sheetName = config.getString("sheetName")
@@ -87,7 +86,7 @@ class GetFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
       } else
         10
 
-      setDataFrameWithOutput(spark
+      setDataFrame(spark
         .read
         .format("com.crealytics.spark.excel")
         .option("sheetName", sheetName)
@@ -101,18 +100,17 @@ class GetFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
         .option("maxRowsInMemory", maxRowsInMemory)
         .option("excerptSize", excerptSize)
         .load(path), outputName)
-    }
-      case _ => {
+      case _ =>
         logger.info("Executing GetFile - %s".format(format))
 
-        setDataFrameWithOutput(spark
+        setDataFrame(spark
           .read
           .option("header", header)
           .option("inferSchema", inferSchema)
           .option("delimiter", delimiter)
           .format(format)
           .load(path), outputName)
-      }
+
     }
     true
   }

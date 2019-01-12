@@ -7,6 +7,9 @@ class PutFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
   val path: String = config.getString("path")
   val format: String = config.getString("format")
   val query: String = config.getString("query")
+  val parallelWrites: Int = if(config.hasPath("parallelWrites")) {
+    config.getInt("parallelWrites")
+  } else {1}
 
   val saveMode: String = if(config.hasPath("saveMode")) {
     config.getString("saveMode")
@@ -14,11 +17,10 @@ class PutFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
     "error"
   }
 
-  override def run(): Boolean = {
+  def run(): Boolean = {
     logger.info("executing saveFile")
     val df: DataFrame = spark.sql(query)
-    setDataFrame(df).write.mode(saveMode).format(format).save(path)
-
+    df.coalesce(parallelWrites).write.mode(saveMode).format(format).save(path)
     true
   }
 }

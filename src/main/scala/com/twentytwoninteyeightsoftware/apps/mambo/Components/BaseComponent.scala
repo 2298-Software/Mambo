@@ -12,17 +12,7 @@ class BaseComponent(spark: SparkSession, config: Config) {
   val enabled: Boolean = config.getBoolean("enabled")
   val typ: String = config.getString("type")
 
-  def run(): Boolean = {
-      true
-  }
-
-  def setDataFrame(_df: DataFrame): DataFrame = {
-    val df: DataFrame = beforeSet(_df)
-    afterSet(df)
-    df
-  }
-
-  def setDataFrameWithOutput(_df: DataFrame, _outputName: String): DataFrame = {
+  def setDataFrame(_df: DataFrame, _outputName: String): DataFrame = {
     val df: DataFrame = beforeSet(_df)
     df.createOrReplaceTempView(_outputName)
     afterSet(df)

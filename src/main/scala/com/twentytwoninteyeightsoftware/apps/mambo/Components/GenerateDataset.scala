@@ -6,7 +6,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 class GenerateDataset(spark: SparkSession, config: Config) extends BaseComponent(spark, config){
   val outputName: String = config.getString("outputName")
 
-  override def run(): Boolean = {
+  def run(): Boolean = {
     val numRows = if(config.hasPath("numRows")){
       config.getInt("numRows")
     } else
@@ -14,7 +14,7 @@ class GenerateDataset(spark: SparkSession, config: Config) extends BaseComponent
 
     logger.info("generating dataset: %s".format(outputName))
     val df: DataFrame = spark.range(0, numRows).toDF()
-    setDataFrameWithOutput(df, outputName)
+    setDataFrame(df, outputName)
 
     true
   }

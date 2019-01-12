@@ -7,9 +7,8 @@ class ExecuteSql(spark: SparkSession, config: Config) extends BaseComponent(spar
   val query: String = config.getString("query")
   val outputName: String = config.getString("outputName")
 
-  override def run(): Boolean = {
+  def run(): Unit = {
     logger.info("running executeSql")
-    setDataFrameWithOutput(spark.sql(query), outputName)
-    true
+    setDataFrame(spark.sql(query), outputName)
   }
 }

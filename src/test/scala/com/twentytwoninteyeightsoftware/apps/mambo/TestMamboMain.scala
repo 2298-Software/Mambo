@@ -1,12 +1,17 @@
 package com.twentytwoninteyeightsoftware.apps.mambo
 
+import java.io.File
+
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
 import java.nio.file.{Files, Path}
+
+import org.apache.commons.io.FileUtils
 import org.scalatest.Assertions.assert
 
 
 class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
-  private def setupDb = {
+
+  override def beforeAll()  {
     import java.sql.DriverManager
     val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
 
@@ -17,7 +22,6 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
     conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
   }
-
 
   test("testGoodConfig"){
     val p: Path = Files.createTempFile("TestMamboMain", null ) ;
@@ -35,6 +39,13 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     MamboMain.main(conf)
   }
 
+  test("testGenerateData"){
+    val conf: Array[String] = new Array[String](2)
+    conf(0) = "examples/generate-data.conf"
+    conf(1) = "examples/environment.conf"
+    MamboMain.main(conf)
+  }
+
   test("testRemoteHttpCsv"){
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/file-ingest-remote-csv.conf"
@@ -43,17 +54,13 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
   }
 
   test("testRdbmsExample"){
-    setupDb
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/rdbms-ingest.conf"
     conf(1) = "examples/environment.conf"
     MamboMain.main(conf)
   }
 
-
   test("testRdbmsIngestAndDistribute"){
-    setupDb
-
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/rdbms-ingest-and-distribute.conf"
     conf(1) = "examples/environment.conf"
@@ -61,10 +68,7 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
 
   }
 
-
   test("testExecuteSqlEvaluationExample"){
-    setupDb
-
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/execute-sql-evaluation-example.conf"
     conf(1) = "examples/environment.conf"
@@ -72,8 +76,6 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
   }
 
   test("testExecuteSqlEvaluationFailExample"){
-    setupDb
-
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/execute-sql-evaluation-fail-example.conf"
     conf(1) = "examples/environment.conf"
@@ -81,10 +83,9 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     try{
       MamboMain.main(conf)
     } catch {
-      case e: Exception => {
+      case e: Exception =>
         assert(e.getMessage == "ExecuteSqlEvaluation query (select if(count(*) " +
           "!= 2, 'pass', 'fail') as result from vehicles) failed the evaluation by returning fail")
-      }
     }
   }
 }
