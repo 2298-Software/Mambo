@@ -14,9 +14,11 @@ class PutFile(spark: SparkSession, config: Config) extends BaseComponent(spark, 
     "error"
   }
 
-  def run(): Unit = {
+  override def run(): Boolean = {
     logger.info("executing saveFile")
     val df: DataFrame = spark.sql(query)
     setDataFrame(df).write.mode(saveMode).format(format).save(path)
+
+    true
   }
 }
