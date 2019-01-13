@@ -7,7 +7,7 @@ class ExecuteSqlEvaluation(spark: SparkSession, config: Config) extends BaseComp
   val query: String = config.getString("query")
   val failOn: String = config.getString("failOn")
 
-  override def run(): Boolean = {
+  def run(): Boolean = {
     logger.info("running ExecuteSqlEvaluation")
     val df = spark.sql(query)
     if(df.count() != 1) {

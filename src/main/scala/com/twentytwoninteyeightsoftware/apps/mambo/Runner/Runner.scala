@@ -52,19 +52,21 @@ class Runner {
         typ
         match {
           case "GenerateDataset" =>
-            new GenerateDataset(spark, stepConfig)
+            new GenerateDataset(spark, stepConfig).run()
           case "GetFile" =>
-            new GetFile(spark, stepConfig)
+            new GetFile(spark, stepConfig).run()
           case "ExecuteSql" =>
-            new ExecuteSql(spark, stepConfig)
+            new ExecuteSql(spark, stepConfig).run()
           case "GetRdbms" =>
-            new GetRdbms(spark, stepConfig)
+            new GetRdbms(spark, stepConfig).run()
           case "PutFile" =>
-            new PutFile(spark, stepConfig)
+            new PutFile(spark, stepConfig).run()
           case "ExecuteSqlEvaluation" =>
-            new ExecuteSqlEvaluation(spark, stepConfig)
+            new ExecuteSqlEvaluation(spark, stepConfig).run()
           case "PutRdbms" =>
-            new PutRdbms(spark, stepConfig)
+            new PutRdbms(spark, stepConfig).run()
+          case "ExecuteCommand" =>
+            new ExecuteCommand(spark, stepConfig).run()
           case _ =>
             throw new Exception("step type %s not implemented!".format(stepConfig.getString("type")))
         }
