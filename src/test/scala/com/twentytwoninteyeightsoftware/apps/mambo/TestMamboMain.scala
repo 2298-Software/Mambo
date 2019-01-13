@@ -13,11 +13,10 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
 
   override def beforeAll()  {
     import java.sql.DriverManager
-    val jdbcUrl = "jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS auto"
+    val jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS auto"
 
     Class.forName("org.h2.Driver")
     val conn = DriverManager.getConnection(jdbcUrl, "sa", "sa")
-    conn.createStatement().execute("drop table if exists auto.vehicles")
     conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
     conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
     conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
@@ -88,4 +87,13 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
           "!= 2, 'pass', 'fail') as result from vehicles) failed the evaluation by returning fail")
     }
   }
+
+  test("testExecuteCommand"){
+    val conf: Array[String] = new Array[String](2)
+    conf(0) = "examples/execute-command-example.conf"
+    conf(1) = "examples/environment.conf"
+    MamboMain.main(conf)
+  }
+
+
 }

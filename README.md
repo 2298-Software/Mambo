@@ -18,7 +18,8 @@ Some examples of what you can easily do with Mambo:
 
 ### Process
 **ExecuteSql** - Execute a sql command against an in-memory dataset.  
-**ExecuteSqlEvaluation** - Execute a sql evaluation command (if > then > else) against one or more in-memory datasets in order to fail the execution of the job.
+**ExecuteSqlEvaluation** - Execute a sql evaluation command (if > then > else) against one or more in-memory datasets in order to fail the execution of the job.  
+**ExecuteCommand** - Execute a command against the host operating sytem and stores the result to an in-memory dataset.
 
 ### Ingest
 **GetFile** - Import files (json, avro, parquet, csv, xls) into an in-memory dataset*  
