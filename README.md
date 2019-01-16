@@ -28,7 +28,7 @@ Some examples of what you can easily do with Mambo:
 
 ### Distribute
 **PutFile** - Save an in-memory dataset to file (csv, json, parquet, avro).  
-**PutRdbms** - Save an in-memory dataset to RDBMS. 
+**PutRdbms** - Save an in-memory dataset to RDBMS.  
 **PutRedis** - Save an in-memory dataset to Redis Key Value store.
 
 *Supports local and remote files based on the specified fs (http://, file://, hdfs://)
