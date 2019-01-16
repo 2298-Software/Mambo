@@ -15,7 +15,6 @@ class PutRedis(spark: SparkSession, config: Config) extends BaseComponent(spark,
 
   def run(): Boolean = {
     logger.info("executing PutRedis")
-    val keysRDD = spark.sparkContext.fromRedisKeyPattern(redisKey, redisPartition)(redisConfig)
     import spark.sqlContext.implicits._
 
     val df = spark.sql(query)
