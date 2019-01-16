@@ -23,11 +23,13 @@ Some examples of what you can easily do with Mambo:
 
 ### Ingest
 **GetFile** - Import files (json, avro, parquet, csv, xls) into an in-memory dataset*  
-**GetRdbms** - Import date (table/query) from RDBMS into an in-memory dataset
+**GetRdbms** - Import date (table/query) from RDBMS into an in-memory dataset.  
+**GetRedis** - Import date (key/value) from a Redis Key Value store into an in-memory dataset.
 
 ### Distribute
-**PutFile** - Save an in-memory dataset to file (csv, json, parquet, avro)  
-**PutRdbms** - Save an in-memory dataset to RDBMS
+**PutFile** - Save an in-memory dataset to file (csv, json, parquet, avro).  
+**PutRdbms** - Save an in-memory dataset to RDBMS. 
+**PutRedis** - Save an in-memory dataset to Redis Key Value store.
 
 *Supports local and remote files based on the specified fs (http://, file://, hdfs://)
 
