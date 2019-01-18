@@ -67,6 +67,8 @@ class Runner {
             new PutRdbms(spark, stepConfig).run()
           case "ExecuteCommand" =>
             new ExecuteCommand(spark, stepConfig).run()
+          case "ExecuteCdc" =>
+            new ExecuteCdc(spark, stepConfig).run()
           case _ =>
             throw new Exception("step type %s not implemented!".format(stepConfig.getString("type")))
         }
