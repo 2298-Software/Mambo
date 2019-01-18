@@ -20,6 +20,10 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     conn.createStatement().execute("create table auto.vehicles (id int, make varchar(50))")
     conn.createStatement().execute("insert into auto.vehicles values (1, 'Ford')")
     conn.createStatement().execute("insert into auto.vehicles values (2, 'Chevrolet')")
+
+    conn.createStatement().execute("create table auto.vehicles_delta (id int, make varchar(50))")
+    conn.createStatement().execute("insert into auto.vehicles_delta values (3, 'GMC')")
+    conn.createStatement().execute("insert into auto.vehicles_delta values (2, 'Chevy')")
   }
 
   test("testGoodConfig"){
@@ -91,6 +95,13 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
   test("testExecuteCommand"){
     val conf: Array[String] = new Array[String](2)
     conf(0) = "examples/execute-command-example.conf"
+    conf(1) = "examples/environment.conf"
+    MamboMain.main(conf)
+  }
+
+  test("testExecuteCdc"){
+    val conf: Array[String] = new Array[String](2)
+    conf(0) = "examples/rdbms-ingest-cdc.conf"
     conf(1) = "examples/environment.conf"
     MamboMain.main(conf)
   }
