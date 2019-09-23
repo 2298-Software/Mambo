@@ -1,16 +1,14 @@
-package com.twentytwoninteyeightsoftware.apps.mambo
+package com.twenty298.apps.mambo
 
 import java.io.File
 
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FunSuite}
 import java.nio.file.{Files, Path}
 
-import org.apache.commons.io.FileUtils
-import org.scalatest.Assertions.assert
-
+import org.slf4j.{Logger, LoggerFactory}
 
 class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
-
+  val logger: Logger = LoggerFactory.getLogger(this.getClass)
   override def beforeAll()  {
     import java.sql.DriverManager
     val jdbcUrl = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS auto"
@@ -26,6 +24,10 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     conn.createStatement().execute("insert into auto.vehicles_delta values (2, 'Chevy')")
   }
 
+  def getDefaultConf(confFile: String): Array[String] ={
+    Array(confFile,"examples/environment.conf")
+  }
+
   test("testGoodConfig"){
     val p: Path = Files.createTempFile("TestMamboMain", null ) ;
     Files.write(p,"application {name=test\nmaster=local\n}\nsteps{}".getBytes()) ;
@@ -36,55 +38,33 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
   }
 
   test("testGoodExample"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/file-ingest-local-csv.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
+    MamboMain.main(getDefaultConf("examples/file-ingest-local-csv.conf"))
   }
 
+
   test("testGenerateData"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/generate-data.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
+    MamboMain.main(getDefaultConf("examples/generate-data.conf"))
   }
 
   test("testRemoteHttpCsv"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/file-ingest-remote-csv.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
+    MamboMain.main(getDefaultConf("examples/file-ingest-remote-csv.conf"))
   }
 
   test("testRdbmsExample"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/rdbms-ingest.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
+    MamboMain.main(getDefaultConf("examples/rdbms-ingest.conf"))
   }
 
   test("testRdbmsIngestAndDistribute"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/rdbms-ingest-and-distribute.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
-
+    MamboMain.main(getDefaultConf("examples/generate-data.conf"))
   }
 
   test("testExecuteSqlEvaluationExample"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/execute-sql-evaluation-example.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
+    MamboMain.main(getDefaultConf("examples/execute-sql-evaluation-example.conf"))
   }
 
   test("testExecuteSqlEvaluationFailExample"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/execute-sql-evaluation-fail-example.conf"
-    conf(1) = "examples/environment.conf"
-
     try{
-      MamboMain.main(conf)
+      MamboMain.main(getDefaultConf("examples/execute-sql-evaluation-fail-example.conf"))
     } catch {
       case e: Exception =>
         assert(e.getMessage == "ExecuteSqlEvaluation query (select if(count(*) " +
@@ -93,17 +73,11 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
   }
 
   test("testExecuteCommand"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/execute-command-example.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
+    MamboMain.main(getDefaultConf("examples/execute-command-example.conf"))
   }
 
   test("testExecuteCdc"){
-    val conf: Array[String] = new Array[String](2)
-    conf(0) = "examples/rdbms-ingest-cdc.conf"
-    conf(1) = "examples/environment.conf"
-    MamboMain.main(conf)
+    MamboMain.main(getDefaultConf("examples/rdbms-ingest-cdc.conf"))
   }
 
 

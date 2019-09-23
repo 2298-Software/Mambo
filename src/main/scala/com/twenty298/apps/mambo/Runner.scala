@@ -1,9 +1,10 @@
-package com.twentytwoninteyeightsoftware.apps.mambo.Runner
+package com.twenty298.apps.mambo
 
 import com.typesafe.config.{Config, ConfigRenderOptions}
-import com.twentytwoninteyeightsoftware.apps.mambo.Components._
 import org.slf4j.{Logger, LoggerFactory}
 import org.apache.spark.sql.SparkSession
+import com.twenty298.apps.mambo.Components.BaseComponent
+import scala.util.{Failure, Success, Try}
 
 class Runner {
   def run(config: Config) {
@@ -40,7 +41,6 @@ class Runner {
 
     val stepNames = config.getObject("steps").keySet().toSeq.sorted
 
-
     for (stepName: String <- stepNames) {
       logger.info("Found step: %s".format(stepName))
       val stepConfig: Config = config.getConfig("steps").getConfig(stepName)
@@ -49,32 +49,17 @@ class Runner {
 
       if (enabled) {
         logger.info("Step: %s is enabled, executing..".format(stepName))
-        typ
+        val processor = Try(Class.forName(s"com.twenty298.apps.mambo.Components.$typ"))
         match {
-          case "GenerateDataset" =>
-            new GenerateDataset(spark, stepConfig).run()
-          case "GetFile" =>
-            new GetFile(spark, stepConfig).run()
-          case "ExecuteSql" =>
-            new ExecuteSql(spark, stepConfig).run()
-          case "GetRdbms" =>
-            new GetRdbms(spark, stepConfig).run()
-          case "PutFile" =>
-            new PutFile(spark, stepConfig).run()
-          case "ExecuteSqlEvaluation" =>
-            new ExecuteSqlEvaluation(spark, stepConfig).run()
-          case "PutRdbms" =>
-            new PutRdbms(spark, stepConfig).run()
-          case "ExecuteCommand" =>
-            new ExecuteCommand(spark, stepConfig).run()
-          case "ExecuteCdc" =>
-            new ExecuteCdc(spark, stepConfig).run()
-          case _ =>
-            throw new Exception("step type %s not implemented!".format(stepConfig.getString("type")))
+          case Success(value) => value.getConstructor(classOf[SparkSession], classOf[Config]).newInstance(spark, stepConfig).asInstanceOf[BaseComponent]
+          case Failure(e) => throw new Exception("step type com.twenty298.apps.mambo.Components.%s not implemented!".format(stepConfig.getString("type")))
         }
-        logger.info("Step: %s is complete.".format(stepName))
+        processor.run()
 
-      } else {
+      logger.info("Step: %s is complete.".format(stepName))
+    }
+
+      else {
         logger.info("skipping disabled step: %s".format(stepConfig.getString("name")))
       }
     }
