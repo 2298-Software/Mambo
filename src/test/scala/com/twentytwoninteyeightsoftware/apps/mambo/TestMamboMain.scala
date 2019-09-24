@@ -24,6 +24,13 @@ class TestMamboMain extends FunSuite with BeforeAndAfterEach with BeforeAndAfter
     conn.createStatement().execute("insert into auto.vehicles_delta values (2, 'Chevy')")
   }
 
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    Seq("metastore_db", "derby.log")
+      .map(new File(_))
+      .filter(_.exists())
+      .foreach(_.delete())
+  }
   def getDefaultConf(confFile: String): Array[String] ={
     Array(confFile,"examples/environment.conf")
   }

@@ -14,15 +14,14 @@ class Runner {
     sparkConf.setAppName(config.getString("application.name"))
     sparkConf.setMaster(config.getString("application.master"))
 
-    if (config.hasPath("application.executors")) {
-      sparkConf.set("spark.executor.instances", config.getString("application.executors"))
-    }
-    if (config.hasPath("application.executor.cores")) {
-      sparkConf.set("spark.executor.cores", config.getString("application.executor.cores"))
-    }
-    if (config.hasPath("application.executor.memory")) {
-      sparkConf.set("spark.executor.memory", config.getString("application.executor.memory"))
-    }
+    //set configs from the "spark" section of the config
+    import scala.collection.JavaConversions._
+    config.getConfig("spark").entrySet().map(e => {
+      val key = e.getKey.replace("_",".")
+      val value = e.getValue.unwrapped().toString
+      println("setting spark configuration value for %s to %s".format(key, value))
+      sparkConf.set(key, value )
+    })
 
     val spark: SparkSession = SparkSession.builder()
       .config(sparkConf)
@@ -42,13 +41,13 @@ class Runner {
     val stepNames = config.getObject("steps").keySet().toSeq.sorted
 
     for (stepName: String <- stepNames) {
-      logger.info("Found step: %s".format(stepName))
+      logger.info("Found step: {}", stepName)
       val stepConfig: Config = config.getConfig("steps").getConfig(stepName)
       val typ = stepConfig.getString("type")
       val enabled = stepConfig.getBoolean("enabled")
 
       if (enabled) {
-        logger.info("Step: %s is enabled, executing..".format(stepName))
+        logger.info("Step: {} enabled, executing..", stepName)
         val processor = Try(Class.forName(s"com.twenty298.apps.mambo.Components.$typ"))
         match {
           case Success(value) => value.getConstructor(classOf[SparkSession], classOf[Config]).newInstance(spark, stepConfig).asInstanceOf[BaseComponent]
@@ -56,11 +55,11 @@ class Runner {
         }
         processor.run()
 
-      logger.info("Step: %s is complete.".format(stepName))
+      logger.info("Step: {} is complete.", stepName)
     }
 
       else {
-        logger.info("skipping disabled step: %s".format(stepConfig.getString("name")))
+        logger.info("skipping disabled step: {}", stepConfig.getString("name"))
       }
     }
     spark.stop()
