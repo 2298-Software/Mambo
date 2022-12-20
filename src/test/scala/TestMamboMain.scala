@@ -1,4 +1,4 @@
-
+import com.ttne.mambo.core.MamboMain
 
 class TestMamboMain extends TestBase {
 
