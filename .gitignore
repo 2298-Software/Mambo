@@ -5,3 +5,5 @@ spark-warehouse
 Maven*xml
 .idea
 dependency-reduced-pom*
+target/
+/target/
